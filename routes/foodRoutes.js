@@ -1,25 +1,48 @@
 const express = require("express");
 
-const authMiddleWare = require("../middleware/authMiddleware");
-const { createFoodController, getAllFoodController, updateFoodController, deleteFoodController, getSingleFoodController } = require("../controller/foodController");
+const authMiddleware = require("../middlewares/authMiddleware");
+const {
+  createFoodController,
+  getAllFoodsController,
+  getSingleFoodController,
+  getFoodByResturantController,
+  updateFoodController,
+  deleteFoodController,
+  placeOrderController,
+  orderStatusController,
+} = require("../controllers/foodController");
+const adminMiddleware = require("../middlewares/adminMiddleware");
 
+const router = express.Router();
 
-const routerFood = express.Router();
+//routes
+//CREATE FOOD
+router.post("/create", authMiddleware, createFoodController);
 
+//GET ALL FOOD
+router.get("/getAll", getAllFoodsController);
 
-routerFood.post("/create-data", authMiddleWare , createFoodController);
-routerFood.get("/get-data",  getAllFoodController);
-routerFood.get("/get-single-data/:id",  getSingleFoodController);
-routerFood.put("/update-data/:id",  updateFoodController);
-routerFood.delete("/delete-data/:id", authMiddleWare , deleteFoodController);
+// GET SINGLE FOOD
+router.get("/get/:id", getSingleFoodController);
 
+// GET  FOOD by rest
+router.get("/getByResturant/:id", getFoodByResturantController);
 
-module.exports = routerFood
+// UPDATE FOOD
+router.put("/update/:id", authMiddleware, updateFoodController);
 
+// DELETE FOOD
+router.delete("/delete/:id", authMiddleware, deleteFoodController);
 
+// PLACE ORDER
+router.post("/placeorder", authMiddleware, placeOrderController);
 
+// ORDER STATUS
+router.post(
+  "/orderStatus/:id",
+  authMiddleware,
+  adminMiddleware,
+  orderStatusController
+);
 
-
-
-
-
+module.exports = router;

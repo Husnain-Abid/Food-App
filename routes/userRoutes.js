@@ -1,26 +1,29 @@
 const express = require("express");
-const { userGetController, userUpdateController, userUpdatepasswordController, userForgotpasswordController, userdeleteController } = require("../controller/userController");
-const authMiddleWare = require("../middleware/authMiddleware");
+const {
+  getUserController,
+  updateUserController,
+  updatePasswordController,
+  resetPasswordController,
+  deleteProfileController,
+} = require("../controllers/userController");
+const authMiddleware = require("../middlewares/authMiddleware");
 
-const routerUser = express.Router();
+const router = express.Router();
 
+//routes
+// GET USER || GET
+router.get("/getUser", authMiddleware, getUserController);
 
-routerUser.get("/get-data", authMiddleWare, userGetController)
-routerUser.put("/update-data", authMiddleWare, userUpdateController)
-routerUser.post("/update-password", authMiddleWare, userUpdatepasswordController)
-routerUser.post("/forgot-password", authMiddleWare, userForgotpasswordController)
-routerUser.delete("/delete-data/:id", authMiddleWare, userdeleteController)
+// UPDATE PROFILE
+router.put("/updateUser", authMiddleware, updateUserController);
 
+//password update
+router.post("/updatePassword", authMiddleware, updatePasswordController);
 
+// RESET PASSWORD
+router.post("/resetPassword", authMiddleware, resetPasswordController);
 
+// delete USER
+router.delete("/deleteUser/:id", authMiddleware, deleteProfileController);
 
-
-module.exports = routerUser
-
-
-
-
-
-
-
-
+module.exports = router;
